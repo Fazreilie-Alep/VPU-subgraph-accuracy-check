@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<net name="Model0" version="11">
+	<layers>
+		<layer id="1" name="Parameter_1" type="Parameter" version="opset1">
+			<data shape="1,9" element_type="f32" />
+			<output>
+				<port id="0" precision="FP32" names="Parameter_1">
+					<dim>1</dim>
+					<dim>9</dim>
+					<rt_info>
+						<attribute name="layout" version="0" layout="[N,C]" />
+					</rt_info>
+				</port>
+			</output>
+		</layer>
+		<layer id="0" name="Parameter_2" type="Parameter" version="opset1">
+			<data shape="4,9" element_type="f32" />
+			<output>
+				<port id="0" precision="FP32" names="Parameter_2">
+					<dim>4</dim>
+					<dim>9</dim>
+					<rt_info>
+						<attribute name="layout" version="0" layout="[?,C]" />
+					</rt_info>
+				</port>
+			</output>
+		</layer>
+		<layer id="2" name="MatMul_3" type="MatMul" version="opset1">
+			<data transpose_a="false" transpose_b="true" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>9</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>4</dim>
+					<dim>9</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>1</dim>
+					<dim>4</dim>
+					<rt_info>
+						<attribute name="layout" version="0" layout="[N,?]" />
+					</rt_info>
+				</port>
+			</output>
+		</layer>
+		<layer id="3" name="Result_4" type="Result" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>4</dim>
+				</port>
+			</input>
+		</layer>
+	</layers>
+	<edges>
+		<edge from-layer="0" from-port="0" to-layer="2" to-port="1" />
+		<edge from-layer="1" from-port="0" to-layer="2" to-port="0" />
+		<edge from-layer="2" from-port="2" to-layer="3" to-port="0" />
+	</edges>
+	<rt_info />
+</net>

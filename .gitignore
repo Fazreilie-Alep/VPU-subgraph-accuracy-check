@@ -1,0 +1,46 @@
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+
+# Ignore virtual environments
+venv/
+env/
+ENV/
+*.env
+.venv/
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.swp
+*.bak
+*.tmp
+
+# Ignore build and distribution directories
+build/
+dist/
+*.egg-info
+
+# Ignore package manager directories
+node_modules/
+
+# Ignore specific OS files
+*.bak
+*.swp
+
+# Ignore others
+cpu/
+npu/
