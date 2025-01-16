@@ -27,10 +27,14 @@ def perform_inference(compiled_model, input_data):
         infer_request.wait()
 
         # Handle multiple output tensors
+        infer_output = compiled_model.outputs
+        # print("Infer Output")
+        # print(infer_output)
         output_tensors = []
-        for i in range(len(compiled_model.outputs)):
+        for i in range(len(infer_output)):
             output_tensor = infer_request.get_output_tensor(i)
             output_tensors.append(output_tensor.data)
+
 
         return output_tensors
 
@@ -42,27 +46,33 @@ def compare_results(cpu_results, npu_results, accuracy, use_tol=True):
     # Assuming cpu_results and npu_results are lists of numpy arrays (one per output tensor)
     all_passed = True
     matched_count = 0
+    total_elements = 0
     
     for i, (cpu, npu) in enumerate(zip(cpu_results, npu_results)):
+        cpu_flat = cpu.flatten()
+        npu_flat = npu.flatten()
+        total_elements += len(cpu_flat)
+        
         if use_tol:
-            if np.allclose(cpu, npu, atol=accuracy):
-                matched_count += 1
-            else:
-                all_passed = False
-                print(f"Output {i} differs:")
+            for j, (cpu_elem, npu_elem) in enumerate(zip(cpu_flat, npu_flat)):
+                if np.isclose(cpu_elem, npu_elem, atol=accuracy):
+                    matched_count += 1
+                else:
+                    all_passed = False
+                    # print(f"Element {j} in Output {i} differs: CPU={cpu_elem}, NPU={npu_elem}")
         else:
-            cpu_rounded = np.round(cpu, accuracy)
-            npu_rounded = np.round(npu, accuracy)
-            if np.array_equal(cpu_rounded, npu_rounded):
-                matched_count += 1
-            else:
-                all_passed = False
-                print(f"Output {i} differs:")
+            cpu_rounded = np.round(cpu_flat, accuracy)
+            npu_rounded = np.round(npu_flat, accuracy)
+            for j, (cpu_elem, npu_elem) in enumerate(zip(cpu_rounded, npu_rounded)):
+                if cpu_elem == npu_elem:
+                    matched_count += 1
+                else:
+                    all_passed = False
+                    # print(f"Element {j} in Output {i} differs: CPU={cpu_rounded}, NPU={npu_rounded}")
         
-        print(f"CPU result:\n{cpu_rounded if not use_tol else cpu}")
-        print(f"NPU result:\n{npu_rounded if not use_tol else npu}")
-        
-    match_percentage = int((matched_count / len(cpu_results)) * 100)
+    print("total elements : " + str(total_elements))
+    print("Matched count : " + str(matched_count))
+    match_percentage = int((matched_count / total_elements) * 100)
     return all_passed, match_percentage
 
 def extract_number(filename):
@@ -155,4 +165,5 @@ if __name__ == "__main__":
     subgraph_folder_npu = os.getenv('NPU_SUBGRAPH_FOLDER')
     output_csv = os.getenv('OUTPUT_CSV')
     
-    main(subgraph_folder_cpu, subgraph_folder_npu, output_csv, [1e-2, 1e-4], [2, 4])
+    # main(subgraph_folder_cpu, subgraph_folder_npu, output_csv, [1e-2, 1e-4], [2, 4])
+    main(subgraph_folder_cpu, subgraph_folder_npu, output_csv, [], [4])
