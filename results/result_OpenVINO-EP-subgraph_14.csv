@@ -1,0 +1,18 @@
+Subgraph,4dp result,First 5 CPU Tensors,First 5 NPU Tensors
+/model/layers.11/input_layernorm/output_3,passed 100,"['0.0895,0.0787,0.8183,0.3848,0.2479']","['0.0895,0.0787,0.8183,0.3848,0.2479']"
+/model/layers.11/attn/o_proj/MatMul_Q4,failed 14,"['1.3922,-0.6897,-0.7468,0.0499,0.5931']","['1.3926,-0.6895,-0.7466,0.0500,0.5933']"
+/model/layers.11/post_attention_layernorm/SkipLayerNorm_/model/layers.11/post_attention_layernorm/output_3,failed 12,"['1.6633,-0.6554,-0.1049,0.9539,1.1601']","['1.6641,-0.6553,-0.1045,0.9536,1.1602']"
+/model/layers.11/post_attention_layernorm/SkipLayerNorm_,failed 0,['1.2591'],['1.2588']
+/model/layers.11/post_attention_layernorm/SkipLayerNorm__1,failed 0,['0.8912'],['0.8911']
+/model/layers.11/post_attention_layernorm/SkipLayerNorm_/model/layers.11/post_attention_layernorm/output_0,failed 41,"['0.3706,-0.1403,-0.0241,0.2001,0.2564']","['0.3706,-0.1403,-0.0240,0.2000,0.2566']"
+/model/layers.11/mlp/gate_proj/MatMul_Q4,failed 15,"['-0.4535,0.9073,0.1957,-0.2511,0.3754']","['-0.4531,0.9072,0.1956,-0.2515,0.3755']"
+/model/layers.11/mlp/act_fn/Sigmoid,failed 29,"['0.3885,0.7125,0.5488,0.4376,0.5928']","['0.3887,0.7124,0.5488,0.4375,0.5928']"
+/model/layers.11/mlp/act_fn/Mul,failed 30,"['-0.1762,0.6464,0.1074,-0.1099,0.2225']","['-0.1761,0.6465,0.1073,-0.1100,0.2225']"
+/model/layers.11/mlp/up_proj/MatMul_Q4,failed 15,"['0.1456,-0.3151,0.5986,0.3193,-0.2282']","['0.1456,-0.3154,0.5986,0.3198,-0.2278']"
+/model/layers.11/mlp/Mul,failed 48,"['-0.0257,-0.2037,0.0643,-0.0351,-0.0508']","['-0.0257,-0.2040,0.0642,-0.0352,-0.0507']"
+/model/layers.11/mlp/down_proj/MatMul_Q4,failed 7,"['-0.2455,1.3426,-1.1247,1.2609,0.9568']","['-0.2454,1.3428,-1.1240,1.2617,0.9565']"
+/model/layers.12/input_layernorm/output_3,failed 6,"['1.4178,0.6872,-1.2296,2.2148,2.1169']","['1.4189,0.6875,-1.2285,2.2148,2.1172']"
+/model/layers.12/input_layernorm/SkipLayerNorm_,failed 0,['2.1042'],['2.1035']
+/model/layers.12/input_layernorm/SkipLayerNorm__1,failed 0,['0.6894'],['0.6895']
+/model/layers.12/input_layernorm/SkipLayerNorm_/model/layers.12/input_layernorm/output_0,failed 18,"['0.3952,0.2008,-0.3593,0.5905,0.5359']","['0.3955,0.2009,-0.3591,0.5908,0.5361']"
+/model/layers.12/attn/qkv_proj/MatMul/output_0,failed 7,"['-0.9897,0.0596,0.7514,-0.4629,1.5052']","['-0.9897,0.0599,0.7520,-0.4624,1.5049']"
