@@ -29,15 +29,16 @@ def accuracy_check_per_subgraph_all(subgraph_folder_cpu, subgraph_folder_npu, ou
 if __name__ == "__main__":
     subgraph_folder_cpu = os.getenv('CPU_SUBGRAPH_FOLDER')
     subgraph_folder_npu = os.getenv('NPU_SUBGRAPH_FOLDER')
-    output_csv = os.getenv('OUTPUT_CSV')
     tol = [0.01,0.001]
     dp = [4] 
     
     # check with respective subgraphs
-    # accuracy_check_per_subgraph_all(subgraph_folder_cpu, subgraph_folder_npu, output_csv, tol, dp) 
+    output_csv = os.getenv('OUTPUT_CSV')
+    accuracy_check_per_subgraph_all(subgraph_folder_cpu, subgraph_folder_npu, output_csv, tol, dp) 
     
     # check with npu subgraphs
-    accuracy_check_per_subgraph_all(subgraph_folder_npu, subgraph_folder_npu, output_csv, tol, dp) 
+    # output_csv = os.getenv('OUTPUT_CSV_NPU')
+    # accuracy_check_per_subgraph_all(subgraph_folder_npu, subgraph_folder_npu, output_csv, tol, dp) 
     # subgraph_files = ['OpenVINO-EP-subgraph_34.xml',
     #         'OpenVINO-EP-subgraph_23.xml',
     #         'OpenVINO-EP-subgraph_15.xml',
