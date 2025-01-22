@@ -99,59 +99,36 @@ def accuracy_check_for_subgraph(subgraph_folder_cpu, subgraph_folder_npu, subgra
     core = ov.Core()
 
     for subgraph_file in subgraph_files:
-        print(f"processing nodes in {subgraph_file}...")
+        print(f"Processing nodes in {subgraph_file}...")
         model_path_cpu = os.path.join(subgraph_folder_cpu, subgraph_file)
         model_path_npu = os.path.join(subgraph_folder_npu, subgraph_file)
         
         results = []
+        nodes = get_matched_node_list(modelpath=model_path_cpu) if model_path_cpu != model_path_npu else get_node_list(modelpath=model_path_npu)
         
-        if model_path_cpu != model_path_npu:
-            nodes = get_matched_node_list(modelpath=model_path_cpu)
-            for node in nodes:
-                print(node)
-                
-            print("\n")
-            
-            for node in nodes:
-                print(f"\nChecking accuracy for {node}...")
+        for node in nodes:
+            print(f"\nChecking accuracy for {node}...")
 
-                new_subgraph_path_cpu = create_new_subgraph(modelpath=model_path_cpu, layername=node)
-                new_subgraph_path_npu = create_new_subgraph(modelpath=model_path_npu, layername=node)
+            new_subgraph_path_cpu = create_new_subgraph(modelpath=model_path_cpu, layername=node) if model_path_cpu != model_path_npu else None
+            new_subgraph_path_npu = create_new_subgraph(modelpath=model_path_npu, layername=node)
 
-                results.append(accuracy_check.accuracy_check(node, core, new_subgraph_path_cpu, new_subgraph_path_npu, tol, dp))
+            results.append(accuracy_check.accuracy_check(node, core, new_subgraph_path_cpu or new_subgraph_path_npu, new_subgraph_path_npu, tol, dp))
 
-                print(f"Deleting {node}...")
+            if new_subgraph_path_cpu:
                 delete_subgraph_files(new_subgraph_path_cpu)
-                delete_subgraph_files(new_subgraph_path_npu)
+            delete_subgraph_files(new_subgraph_path_npu)
 
-                print("\n============================================================================================\n")
-        else:
-            nodes = get_node_list(modelpath=model_path_npu)
-            for node in nodes:
-                print(node)
-                
-            print("\n")
-            
-            for node in nodes:
-                print(f"\nChecking accuracy for {node}...")
-                
-                new_subgraph_path_npu = create_new_subgraph(modelpath=model_path_npu, layername=node)
-                
-                results.append(accuracy_check.accuracy_check(node, core, new_subgraph_path_npu, new_subgraph_path_npu, tol, dp))
-                
-                print(f"Deleting {node}...")
-                delete_subgraph_files(new_subgraph_path_npu)
-                
-                print("\n============================================================================================\n")
+            print("\n============================================================================================\n")
         
         accuracy_check.write_result(results=results, output_csv_filepath=os.path.join(output_folder, "result_" + subgraph_file.replace(".xml",".csv")), tol=tol, dp=dp)
-    
+        print("\n############################################################################################\n\n")
+        
+        
 def accuracy_check_for_subgraph_all(subgraph_folder_cpu, subgraph_folder_npu, output_folder, tol, dp):
     subgraph_files_cpu = {f for f in os.listdir(subgraph_folder_cpu) if f.endswith('.xml')}
     subgraph_files_npu = {f for f in os.listdir(subgraph_folder_npu) if f.endswith('.xml')}
     subgraph_files = subgraph_files_cpu & subgraph_files_npu
     accuracy_check_for_subgraph(subgraph_folder_cpu, subgraph_folder_npu, subgraph_files, output_folder, tol, dp)
-        
     
 # Main execution
 if __name__ == "__main__":
@@ -168,18 +145,6 @@ if __name__ == "__main__":
     # check with npu subgraphs (all nodes)
     # accuracy_check_for_subgraph_all(subgraph_folder_npu, subgraph_folder_npu, output_folder, tol, dp)
     
-    subgraph_files = [  "OpenVINO-EP-subgraph_10.xml",
-                        "OpenVINO-EP-subgraph_15.xml",
-                        "OpenVINO-EP-subgraph_16.xml",
-                        "OpenVINO-EP-subgraph_19.xml",
-                        "OpenVINO-EP-subgraph_21.xml",
-                        "OpenVINO-EP-subgraph_24.xml",
-                        "OpenVINO-EP-subgraph_25.xml",
-                        "OpenVINO-EP-subgraph_27.xml",
-                        "OpenVINO-EP-subgraph_28.xml",
-                        "OpenVINO-EP-subgraph_30.xml",
-                        "OpenVINO-EP-subgraph_31.xml",
-                        "OpenVINO-EP-subgraph_32.xml",
-                        "OpenVINO-EP-subgraph_33.xml",
-                        "OpenVINO-EP-subgraph_34.xml"  ]
+    subgraph_files = [  "OpenVINO-EP-subgraph_19.xml",
+                        "OpenVINO-EP-subgraph_21.xml" ]
     accuracy_check_for_subgraph(subgraph_folder_npu, subgraph_folder_npu, subgraph_files, output_folder, tol, dp)
