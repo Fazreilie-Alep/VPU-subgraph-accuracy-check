@@ -1,0 +1,61 @@
+Subgraph,5 highest absolute error,0.01 result,0.001 result,4dp result,First 5 CPU Tensors,First 5 NPU Tensors
+/model/layers.22/input_layernorm/output_3,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"0.0895,0.0787,0.8183,0.3848,0.2479","0.0895,0.0787,0.8183,0.3848,0.2479"
+ConvertLike_7244,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"15.0000,9.0000,7.0000,4.0000,7.0000","15.0000,9.0000,7.0000,4.0000,7.0000"
+Transpose_7246,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"15.0000,4.0000,10.0000,2.0000,6.0000","15.0000,4.0000,10.0000,2.0000,6.0000"
+Subtract_7247,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"7.0000,-4.0000,2.0000,-6.0000,-2.0000","7.0000,-4.0000,2.0000,-6.0000,-2.0000"
+Multiply_7248,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0820,-0.0569,0.0201,0.0688,0.0154","-0.0820,-0.0569,0.0201,0.0688,0.0154"
+Transpose_7249,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0820,-0.0117,0.0117,0.0469,0.0117","-0.0820,-0.0117,0.0117,0.0469,0.0117"
+Reshape_7251,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0820,-0.0117,0.0117,0.0469,0.0117","-0.0820,-0.0117,0.0117,0.0469,0.0117"
+Slice_7256,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0820,-0.0117,0.0117,0.0469,0.0117","-0.0820,-0.0117,0.0117,0.0469,0.0117"
+/model/layers.22/attn/o_proj/MatMul_Q4,"0.0023,0.0022,0.0021,0.0014,0.0014",passed 100,failed 99,failed 12,"-0.0838,0.1814,-0.4866,2.4731,-1.3350","-0.0838,0.1815,-0.4866,2.4727,-1.3350"
+/model/layers.22/post_attention_layernorm/SkipLayerNorm_/model/layers.22/post_attention_layernorm/output_3,"0.0034,0.0032,0.0025,0.0022,0.0022",passed 100,failed 95,failed 10,"0.1873,0.2157,0.1553,3.3771,-0.7679","0.1873,0.2158,0.1555,3.3770,-0.7681"
+Multiply_7259,"0.0520,0.0331,0.0254,0.0221,0.0162",failed 99,failed 71,failed 13,"0.0351,0.0465,0.0241,11.4045,0.5897","0.0351,0.0466,0.0242,11.4062,0.5898"
+/model/layers.22/post_attention_layernorm/SkipLayerNorm_,0.0011,passed 100,failed 0,failed 0,2.0011,2.0000
+Add_7263,0.0011,passed 100,failed 0,failed 0,2.0011,2.0000
+Sqrt_7264,0.0005,passed 100,passed 100,failed 0,1.4146,1.4141
+/model/layers.22/post_attention_layernorm/SkipLayerNorm__1,0.0001,passed 100,passed 100,failed 0,0.7069,0.7070
+Multiply_7267,"0.0035,0.0034,0.0029,0.0023,0.0019",passed 100,failed 96,failed 13,"0.1324,0.1525,0.1098,2.3873,-0.5429","0.1324,0.1526,0.1100,2.3867,-0.5430"
+/model/layers.22/post_attention_layernorm/SkipLayerNorm_/model/layers.22/post_attention_layernorm/output_0,"0.0013,0.0012,0.0009,0.0009,0.0009",passed 100,failed 99,failed 28,"0.0522,0.0587,0.0433,0.9558,-0.2184","0.0522,0.0587,0.0434,0.9556,-0.2185"
+ConvertLike_7271,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"13.0000,12.0000,10.0000,15.0000,15.0000","13.0000,12.0000,10.0000,15.0000,15.0000"
+Transpose_7273,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"13.0000,4.0000,15.0000,8.0000,7.0000","13.0000,4.0000,15.0000,8.0000,7.0000"
+Subtract_7274,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"5.0000,-4.0000,7.0000,0.0000,-1.0000","5.0000,-4.0000,7.0000,0.0000,-1.0000"
+Multiply_7275,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0362,0.0432,-0.0675,0.0000,-0.0092","-0.0362,0.0432,-0.0675,0.0000,-0.0092"
+Transpose_7276,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0362,-0.0289,-0.0145,-0.0506,-0.0506","-0.0362,-0.0289,-0.0145,-0.0506,-0.0506"
+Reshape_7278,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0362,-0.0289,-0.0145,-0.0506,-0.0506","-0.0362,-0.0289,-0.0145,-0.0506,-0.0506"
+Slice_7283,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"-0.0362,-0.0289,-0.0145,-0.0506,-0.0506","-0.0362,-0.0289,-0.0145,-0.0506,-0.0506"
+/model/layers.22/mlp/gate_proj/MatMul_Q4,"0.0020,0.0019,0.0018,0.0017,0.0017",passed 100,failed 98,failed 9,"-1.0643,-0.3990,-1.0381,-0.5022,0.9369","-1.0645,-0.3989,-1.0391,-0.5020,0.9375"
+/model/layers.22/mlp/act_fn/Sigmoid,"0.0006,0.0006,0.0006,0.0005,0.0005",passed 100,passed 100,failed 25,"0.2565,0.4016,0.2615,0.3770,0.7185","0.2563,0.4016,0.2612,0.3770,0.7188"
+/model/layers.22/mlp/act_fn/Mul,"0.0025,0.0023,0.0022,0.0021,0.0018",passed 100,failed 98,failed 21,"-0.2730,-0.1602,-0.2715,-0.1893,0.6731","-0.2729,-0.1602,-0.2715,-0.1892,0.6738"
+ConvertLike_7289,"0.0000,0.0000,0.0000,0.0000,0.0000",passed 100,passed 100,passed 100,"9.0000,13.0000,8.0000,6.0000,9.0000","9.0000,13.0000,8.0000,6.0000,9.0000"
+Transpose_7291,Inference failed
+Subtract_7292,Model loading failed
+Multiply_7293,Model loading failed
+Transpose_7294,Model loading failed
+Reshape_7296,Model loading failed
+Slice_7301,Model loading failed
+/model/layers.22/mlp/up_proj/MatMul_Q4,Model loading failed
+/model/layers.22/mlp/Mul,Model loading failed
+ConvertLike_7306,Model loading failed
+Transpose_7308,Model loading failed
+Subtract_7309,Model loading failed
+Multiply_7310,Model loading failed
+Transpose_7311,Model loading failed
+Reshape_7313,Model loading failed
+Slice_7318,Model loading failed
+/model/layers.22/mlp/down_proj/MatMul_Q4,Model loading failed
+/model/layers.23/input_layernorm/output_3,Model loading failed
+Multiply_7321,Model loading failed
+/model/layers.23/input_layernorm/SkipLayerNorm_,Model loading failed
+Add_7325,Model loading failed
+Sqrt_7326,Model loading failed
+/model/layers.23/input_layernorm/SkipLayerNorm__1,Model loading failed
+Multiply_7329,Model loading failed
+/model/layers.23/input_layernorm/SkipLayerNorm_/model/layers.23/input_layernorm/output_0,Model loading failed
+ConvertLike_7333,Model loading failed
+Transpose_7335,Model loading failed
+Subtract_7336,Model loading failed
+Multiply_7337,Model loading failed
+Transpose_7338,Model loading failed
+Reshape_7340,Model loading failed
+Slice_7345,Model loading failed
+/model/layers.23/attn/qkv_proj/MatMul/output_0,Model loading failed

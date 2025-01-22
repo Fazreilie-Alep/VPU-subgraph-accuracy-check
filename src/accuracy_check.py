@@ -47,6 +47,16 @@ def compare_results(cpu_results, npu_results, accuracy, use_tol=True):
     return all_passed, match_percentage
 
 
+def compare_result_absolute_error(cpu_results, npu_results):
+    all_diffs = []
+    for cpu, npu in zip(cpu_results, npu_results):
+        abs_diff = np.abs(cpu - npu)
+        all_diffs.extend(abs_diff.flatten())
+    
+    top_5_diffs = sorted(all_diffs, reverse=True)[:5]
+    return [','.join(f"{diff:.4f}" for diff in top_5_diffs)]
+
+
 def extract_number(filename):
     match = re.search(r'_(\d+)\.xml$', filename)
     return int(match.group(1)) if match else float('inf')
@@ -78,27 +88,27 @@ def accuracy_check(subgraph_file, core, model_path_cpu, model_path_npu, tol, dp)
     if npu_result is None:
         print(f"Error during NPU inference for {subgraph_file}")
         return [subgraph_file] + ["Inference failed"]
+    
+    results_label = [
+        f"{'passed' if passed else 'failed'} {match_percentage}"
+        for tol_val in tol
+        for passed, match_percentage in [compare_results(cpu_result, npu_result, tol_val, True)]
+    ] + [
+        f"{'passed' if passed else 'failed'} {match_percentage}"
+        for dp_val in dp
+        for passed, match_percentage in [compare_results(cpu_result, npu_result, dp_val, False)]
+    ]
+    
+    first_5_cpu = [','.join(format_tensor_elements(tensor) for tensor in cpu_result[:5])]
+    first_5_npu = [','.join(format_tensor_elements(tensor) for tensor in npu_result[:5])]
 
-    results_label = []
-    for tol_val in tol:
-        passed, match_percentage = compare_results(cpu_result, npu_result, tol_val, True)
-        results_label.append(f"{'passed' if passed else 'failed'} {match_percentage}")
-
-    for dp_val in dp:
-        passed, match_percentage = compare_results(cpu_result, npu_result, dp_val, False)
-        results_label.append(f"{'passed' if passed else 'failed'} {match_percentage}")
-
-    first_5_cpu = [format_tensor_elements(tensor) for tensor in cpu_result[:5]]
-    first_5_npu = [format_tensor_elements(tensor) for tensor in npu_result[:5]]
-
-    return [subgraph_file] + results_label + [first_5_cpu, first_5_npu]
-
+    return [subgraph_file] + compare_result_absolute_error(cpu_result, npu_result) + results_label + first_5_cpu + first_5_npu
 
 def write_result(results, output_csv_filepath, tol, dp):
     with open(output_csv_filepath, mode='w', newline='') as file:
         writer = csv.writer(file)
         header = tol + [f"{dp_val}dp" for dp_val in dp]
-        writer.writerow(["Subgraph"] + [f"{accuracy} result" for accuracy in header] + ["First 5 CPU Tensors", "First 5 NPU Tensors"])
+        writer.writerow(["Subgraph", "5 highest absolute error"] + [f"{accuracy} result" for accuracy in header] + ["First 5 CPU Tensors", "First 5 NPU Tensors"])
         writer.writerows(results)
 
     print(f"Results saved to {output_csv_filepath}")

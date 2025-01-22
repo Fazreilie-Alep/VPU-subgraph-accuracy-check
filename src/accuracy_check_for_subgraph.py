@@ -1,5 +1,5 @@
 import edit_xml
-import subgraph_accuracy_check
+import accuracy_check
 from lxml import objectify
 from shutil import copyfile
 from pathlib import Path
@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def get_node_list(modelpath):
+def get_matched_node_list(modelpath):
     modelpath = Path(modelpath)
     parser = objectify.makeparser(remove_comments=True)
     temp_tree = objectify.parse(str(modelpath), parser=parser)
@@ -26,7 +26,26 @@ def get_node_list(modelpath):
         if 'name' in node.attrib and "/model/layers." in node.attrib['name'] and not any(excluded in node.attrib['name'] for excluded in excluded_names)
     ]
 
-    return node_lst[:3]
+    return node_lst
+
+
+def get_node_list(modelpath):
+    modelpath = Path(modelpath)
+    parser = objectify.makeparser(remove_comments=True)
+    temp_tree = objectify.parse(str(modelpath), parser=parser)
+
+    if temp_tree is None:
+        raise Exception("Cannot parse model IR")
+
+    excluded_names = {"OpenVINO-EP-subgraph", "sink_port", "GroupQueryAttention", "Constant", "weight_scales", "weight"}
+
+    node_lst = [
+        node.attrib['name']
+        for node in temp_tree.iter()
+        if 'name' in node.attrib and not any(excluded in node.attrib['name'] for excluded in excluded_names)
+    ]
+
+    return node_lst
 
 
 def create_new_subgraph(modelpath, layername):
@@ -76,54 +95,56 @@ def delete_subgraph_files(subgraph_path):
         print(f"BIN file does not exist: {bin_file_to_delete}")
 
 
-def accuracy_check_for_subgraph_specified(subgraph_folder_cpu, subgraph_folder_npu, subgraph_file, output_folder, tol, dp):
+def accuracy_check_for_subgraph(subgraph_folder_cpu, subgraph_folder_npu, subgraph_files, output_folder, tol, dp):
     core = ov.Core()
-    
-    model_path_cpu = os.path.join(subgraph_folder_cpu, subgraph_file)
-    model_path_npu = os.path.join(subgraph_folder_npu, subgraph_file)
-    
-    nodes = get_node_list(modelpath=model_path_cpu)
-    results = []
-    for node in nodes:
-        print(f"\nChecking accuracy for {node}...")
 
-        new_subgraph_path_cpu = create_new_subgraph(modelpath=model_path_cpu, layername=node)
-        new_subgraph_path_npu = create_new_subgraph(modelpath=model_path_npu, layername=node)
+    for subgraph_file in subgraph_files:
+        print(f"Processing nodes in {subgraph_file}...")
+        model_path_cpu = os.path.join(subgraph_folder_cpu, subgraph_file)
+        model_path_npu = os.path.join(subgraph_folder_npu, subgraph_file)
+        
+        results = []
+        nodes = get_matched_node_list(modelpath=model_path_cpu) if model_path_cpu != model_path_npu else get_node_list(modelpath=model_path_npu)
+        
+        for node in nodes:
+            print(f"\nChecking accuracy for {node}...")
 
-        results.append(subgraph_accuracy_check.accuracy_check(node, core, new_subgraph_path_cpu, new_subgraph_path_npu, tol, dp))
+            new_subgraph_path_cpu = create_new_subgraph(modelpath=model_path_cpu, layername=node) if model_path_cpu != model_path_npu else None
+            new_subgraph_path_npu = create_new_subgraph(modelpath=model_path_npu, layername=node)
 
-        print(f"Deleting {node}...")
-        delete_subgraph_files(new_subgraph_path_cpu)
-        delete_subgraph_files(new_subgraph_path_npu)
+            results.append(accuracy_check.accuracy_check(node, core, new_subgraph_path_cpu or new_subgraph_path_npu, new_subgraph_path_npu, tol, dp))
 
-        print("\n")
-    
-    subgraph_accuracy_check.write_result(results=results, output_csv_filepath=os.path.join(output_folder, "result_" + subgraph_file.replace(".xml",".csv")), tol=tol, dp=dp)
-    
+            if new_subgraph_path_cpu:
+                delete_subgraph_files(new_subgraph_path_cpu)
+            delete_subgraph_files(new_subgraph_path_npu)
 
-def accuracy_check_for_subgraph(subgraph_folder_cpu, subgraph_folder_npu, output_folder, tol, dp):
-    core = ov.Core()
+            print("\n============================================================================================\n")
+        
+        accuracy_check.write_result(results=results, output_csv_filepath=os.path.join(output_folder, "result_" + subgraph_file.replace(".xml",".csv")), tol=tol, dp=dp)
+        print("\n############################################################################################\n\n")
+        
+        
+def accuracy_check_for_subgraph_all(subgraph_folder_cpu, subgraph_folder_npu, output_folder, tol, dp):
     subgraph_files_cpu = {f for f in os.listdir(subgraph_folder_cpu) if f.endswith('.xml')}
     subgraph_files_npu = {f for f in os.listdir(subgraph_folder_npu) if f.endswith('.xml')}
     subgraph_files = subgraph_files_cpu & subgraph_files_npu
-
-    for subgraph_file in subgraph_files:
-        print(f"Examining nodes inside {subgraph_file}...")
-        accuracy_check_for_subgraph_specified(subgraph_folder_cpu, subgraph_folder_npu, subgraph_file, output_folder, tol, dp)
-        
-    print("\n============================================================================================\n")
+    accuracy_check_for_subgraph(subgraph_folder_cpu, subgraph_folder_npu, subgraph_files, output_folder, tol, dp)
     
 # Main execution
 if __name__ == "__main__":
     subgraph_folder_cpu = os.getenv('CPU_SUBGRAPH_FOLDER')
     subgraph_folder_npu = os.getenv('NPU_SUBGRAPH_FOLDER')
     output_folder = os.getenv('OUTPUT_FOLDER')
-    tol = []  # Example tolerances for accuracy check
-    dp = [4]  # Example DP values
+    tol = [0.01,0.001]
+    dp = [4]    
     
+    # check with respective subgraphs (matched nodes)
+    # accuracy_check_for_subgraph_all(subgraph_folder_cpu, subgraph_folder_npu, output_folder, tol, dp)
+    # accuracy_check_for_subgraph_specified(subgraph_folder_cpu, subgraph_folder_npu, "OpenVINO-EP-subgraph_30.xml", output_folder, tol, dp)
     
-    # check all subgraphs
-    # accuracy_check_for_subgraph(subgraph_folder_cpu, subgraph_folder_npu, output_folder, tol, dp)
+    # check with npu subgraphs (all nodes)
+    # accuracy_check_for_subgraph_all(subgraph_folder_npu, subgraph_folder_npu, output_folder, tol, dp)
     
-    # check specified subgraph
-    accuracy_check_for_subgraph_specified(subgraph_folder_cpu, subgraph_folder_npu, "OpenVINO-EP-subgraph_30.xml", output_folder, tol, dp)
+    subgraph_files = [  "OpenVINO-EP-subgraph_19.xml",
+                        "OpenVINO-EP-subgraph_21.xml" ]
+    accuracy_check_for_subgraph(subgraph_folder_npu, subgraph_folder_npu, subgraph_files, output_folder, tol, dp)
