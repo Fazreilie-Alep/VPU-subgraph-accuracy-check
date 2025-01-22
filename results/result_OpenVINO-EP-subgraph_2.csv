@@ -1,1 +1,1 @@
-Subgraph,4dp result,First 5 CPU Tensors,First 5 NPU Tensors
+Subgraph,5 highest absolute error,0.01 result,0.001 result,4dp result,First 5 CPU Tensors,First 5 NPU Tensors

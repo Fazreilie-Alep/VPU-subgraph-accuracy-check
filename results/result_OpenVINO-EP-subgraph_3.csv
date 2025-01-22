@@ -1,17 +1,17 @@
-Subgraph,4dp result,First 5 CPU Tensors,First 5 NPU Tensors
-/model/layers.0/attn/o_proj/MatMul_Q4,failed 28,"['-0.4100,-0.1729,0.2013,0.3771,0.1301']","['-0.4099,-0.1729,0.2012,0.3770,0.1299']"
-/model/layers.0/post_attention_layernorm/SkipLayerNorm_/model/layers.0/post_attention_layernorm/output_3,failed 17,"['-0.1390,-0.1386,0.8432,1.2810,0.6971']","['-0.1389,-0.1385,0.8433,1.2812,0.6968']"
-/model/layers.0/post_attention_layernorm/SkipLayerNorm_,passed 100,['0.6250'],['0.6250']
-/model/layers.0/post_attention_layernorm/SkipLayerNorm__1,failed 0,['1.2649'],['1.2646']
-/model/layers.0/post_attention_layernorm/SkipLayerNorm_/model/layers.0/post_attention_layernorm/output_0,failed 87,"['-0.0070,-0.0067,0.0357,0.0538,0.0349']","['-0.0070,-0.0067,0.0357,0.0538,0.0349']"
-/model/layers.0/mlp/gate_proj/MatMul_Q4,failed 67,"['-0.1117,0.0396,-0.0879,-0.1442,0.0489']","['-0.1117,0.0396,-0.0879,-0.1442,0.0489']"
-/model/layers.0/mlp/act_fn/Sigmoid,failed 28,"['0.4721,0.5099,0.4780,0.4640,0.5122']","['0.4722,0.5098,0.4780,0.4641,0.5122']"
-/model/layers.0/mlp/act_fn/Mul,failed 78,"['-0.0527,0.0202,-0.0420,-0.0669,0.0251']","['-0.0527,0.0202,-0.0420,-0.0669,0.0251']"
-/model/layers.0/mlp/up_proj/MatMul_Q4,failed 69,"['-0.0222,0.0619,-0.1085,0.0301,-0.0047']","['-0.0222,0.0620,-0.1085,0.0301,-0.0047']"
-/model/layers.0/mlp/Mul,failed 97,"['0.0012,0.0012,0.0046,-0.0020,-0.0001']","['0.0012,0.0012,0.0046,-0.0020,-0.0001']"
-/model/layers.0/mlp/down_proj/MatMul_Q4,failed 88,"['0.0219,0.0109,-0.0006,-0.0105,0.0083']","['0.0219,0.0109,-0.0006,-0.0105,0.0083']"
-/model/layers.1/input_layernorm/output_3,failed 16,"['-0.1171,-0.1277,0.8426,1.2705,0.7054']","['-0.1171,-0.1277,0.8428,1.2705,0.7051']"
-/model/layers.1/input_layernorm/SkipLayerNorm_,failed 0,['0.6301'],['0.6299']
-/model/layers.1/input_layernorm/SkipLayerNorm__1,failed 0,['1.2598'],['1.2607']
-/model/layers.1/input_layernorm/SkipLayerNorm_/model/layers.1/input_layernorm/output_0,failed 85,"['-0.0027,-0.0041,0.0163,0.0311,0.0148']","['-0.0027,-0.0041,0.0163,0.0311,0.0148']"
-/model/layers.1/attn/qkv_proj/MatMul/output_0,failed 33,"['-0.7028,0.7229,-0.4386,0.3254,0.3946']","['-0.7036,0.7236,-0.4392,0.3259,0.3950']"
+Subgraph,5 highest absolute error,0.01 result,0.001 result,4dp result,First 5 CPU Tensors,First 5 NPU Tensors
+/model/layers.0/attn/o_proj/MatMul_Q4,"0.0010,0.0006,0.0006,0.0006,0.0006",passed 100,passed 100,failed 28,"-0.4100,-0.1729,0.2013,0.3771,0.1301","-0.4099,-0.1729,0.2012,0.3770,0.1299"
+/model/layers.0/post_attention_layernorm/SkipLayerNorm_/model/layers.0/post_attention_layernorm/output_3,"0.0012,0.0011,0.0011,0.0010,0.0010",passed 100,failed 99,failed 17,"-0.1390,-0.1386,0.8432,1.2810,0.6971","-0.1389,-0.1385,0.8433,1.2812,0.6968"
+/model/layers.0/post_attention_layernorm/SkipLayerNorm_,0.0000,passed 100,passed 100,passed 100,0.6250,0.6250
+/model/layers.0/post_attention_layernorm/SkipLayerNorm__1,0.0003,passed 100,passed 100,failed 0,1.2649,1.2646
+/model/layers.0/post_attention_layernorm/SkipLayerNorm_/model/layers.0/post_attention_layernorm/output_0,"0.0001,0.0001,0.0001,0.0001,0.0001",passed 100,passed 100,failed 87,"-0.0070,-0.0067,0.0357,0.0538,0.0349","-0.0070,-0.0067,0.0357,0.0538,0.0349"
+/model/layers.0/mlp/gate_proj/MatMul_Q4,"0.0002,0.0002,0.0002,0.0002,0.0002",passed 100,passed 100,failed 67,"-0.1117,0.0396,-0.0879,-0.1442,0.0489","-0.1117,0.0396,-0.0879,-0.1442,0.0489"
+/model/layers.0/mlp/act_fn/Sigmoid,"0.0004,0.0004,0.0004,0.0004,0.0004",passed 100,passed 100,failed 28,"0.4721,0.5099,0.4780,0.4640,0.5122","0.4722,0.5098,0.4780,0.4641,0.5122"
+/model/layers.0/mlp/act_fn/Mul,"0.0004,0.0002,0.0002,0.0002,0.0002",passed 100,passed 100,failed 78,"-0.0527,0.0202,-0.0420,-0.0669,0.0251","-0.0527,0.0202,-0.0420,-0.0669,0.0251"
+/model/layers.0/mlp/up_proj/MatMul_Q4,"0.0002,0.0002,0.0002,0.0002,0.0002",passed 100,passed 100,failed 69,"-0.0222,0.0619,-0.1085,0.0301,-0.0047","-0.0222,0.0620,-0.1085,0.0301,-0.0047"
+/model/layers.0/mlp/Mul,"0.0001,0.0001,0.0001,0.0000,0.0000",passed 100,passed 100,failed 97,"0.0012,0.0012,0.0046,-0.0020,-0.0001","0.0012,0.0012,0.0046,-0.0020,-0.0001"
+/model/layers.0/mlp/down_proj/MatMul_Q4,"0.0002,0.0002,0.0002,0.0002,0.0001",passed 100,passed 100,failed 88,"0.0219,0.0109,-0.0006,-0.0105,0.0083","0.0219,0.0109,-0.0006,-0.0105,0.0083"
+/model/layers.1/input_layernorm/output_3,"0.0016,0.0015,0.0014,0.0014,0.0013",passed 100,failed 99,failed 16,"-0.1171,-0.1277,0.8426,1.2705,0.7054","-0.1171,-0.1277,0.8428,1.2705,0.7051"
+/model/layers.1/input_layernorm/SkipLayerNorm_,0.0002,passed 100,passed 100,failed 0,0.6301,0.6299
+/model/layers.1/input_layernorm/SkipLayerNorm__1,0.0010,passed 100,passed 100,failed 0,1.2598,1.2607
+/model/layers.1/input_layernorm/SkipLayerNorm_/model/layers.1/input_layernorm/output_0,"0.0009,0.0007,0.0006,0.0006,0.0005",passed 100,passed 100,failed 85,"-0.0027,-0.0041,0.0163,0.0311,0.0148","-0.0027,-0.0041,0.0163,0.0311,0.0148"
+/model/layers.1/attn/qkv_proj/MatMul/output_0,"0.0019,0.0019,0.0018,0.0017,0.0016",passed 100,failed 99,failed 33,"-0.7028,0.7229,-0.4386,0.3254,0.3946","-0.7036,0.7236,-0.4392,0.3259,0.3950"
