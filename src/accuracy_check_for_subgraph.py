@@ -145,5 +145,5 @@ if __name__ == "__main__":
     # check with npu subgraphs (all nodes)
     output_folder = os.getenv('OUTPUT_FOLDER_NPU')
     # accuracy_check_for_subgraph_all(subgraph_folder_npu, subgraph_folder_npu, output_folder, tol, dp)
-    subgraph_files = ["OpenVINO-EP-subgraph_25.xml"]
+    subgraph_files = ["OpenVINO-EP-subgraph_16.xml"]
     accuracy_check_for_subgraph(subgraph_folder_npu, subgraph_folder_npu, subgraph_files, output_folder, tol, dp)
