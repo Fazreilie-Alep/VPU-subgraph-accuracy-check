@@ -10,7 +10,7 @@ The root cause of this problem was traced to a subgraph within the compiled mode
 
 To resolve this issue, this repository was created to facilitate the comparison of subgraphs from the model's inference on different hardware platforms. The goal is to identify problematic subgraphs that lead to inconsistent outputs.
 
-The process involves comparing the output of subgraphs between the NPU and CPU. If the outputs match, it is labeled as a success. Otherwise, it is marked as a failure, helping developers pinpoint and debug problematic subgraphs.
+The process involves comparing the output of subgraphs between the NPU and CPU. If the outputs match, it is labeled as a success (passed). Otherwise, it is marked as a failure, helping developers pinpoint and debug problematic subgraphs.
 
 ### Key Idea
 - Isolate the problematic subgraph to CPU using the NPUW plugin to investigate further.
